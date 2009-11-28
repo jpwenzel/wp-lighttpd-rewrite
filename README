@@ -1,0 +1,20 @@
+--------------------------------------------------------------------------------
+wp-lighttpd-rewrite
+--------------------------------------------------------------------------------
+
+Rewrite rules for a Wordpress 2.x installation on top of a lighttpd web server
+
+Written by Giovanni Intini, Jean Pierre Wenzel <jpwenzel@gmx.net>
+
+This file comes in very handy if your using the following Wordpress Plugins:
+* wp-super-cache (http://ocaoimh.ie/wp-super-cache/)
+* WP-touch (http://bravenewcode.com/wptouch)
+
+Usually, the mobile devices get the cached version of your Wordpress site served
+instead of the WP-touch UI version. This script allows you to serve uncached 
+files to mobile devices, search engine bots, etc. while serving cached (and 
+possibly even compressed) content to "regular" viewers of your blog.
+
+This LUA script is based on the great work of Giovanni Intini:
+http://tempe.st/2008/05/lightning-speed-wordpress-with-lighttpd-and-supercache-part-ii/
+--------------------------------------------------------------------------------
