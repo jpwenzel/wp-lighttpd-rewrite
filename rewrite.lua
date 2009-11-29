@@ -1,16 +1,31 @@
 --[[
 rewrite.lua
 -------------------------------------------------------------------------------
-Rewrite rules for a Wordpress 2.x installation on top of a lighttpd web server
+Rewrite rules for a Wordpress 2.x installation on top of a lighttpd web server.
 
-Written by Giovanni Intini, Jean Pierre Wenzel <jpwenzel@gmx.net>
-
-This file comes in very handy if your using the following Wordpress Plugins:
-* wp-super-cache (http://ocaoimh.ie/wp-super-cache/)
-* WP-touch (http://bravenewcode.com/wptouch)
+This LUA script comes in very handy if your using the following plugins in
+your Wordpress installation:
+  * wp-super-cache (http://ocaoimh.ie/wp-super-cache/)
+  * WP-touch (http://bravenewcode.com/wptouch)
 
 This LUA script is based on the great work of Giovanni Intini:
 http://tempe.st/2008/05/lightning-speed-wordpress-with-lighttpd-and-supercache-part-ii/
+
+-------------------------------------------------------------------------------
+Copyright 2008,2009 by Giovanni Intini, Jean Pierre Wenzel <jpwenzel@gmx.net>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -------------------------------------------------------------------------------
 --]]
 
