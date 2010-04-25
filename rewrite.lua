@@ -72,7 +72,7 @@ if (not attr) then
     sendCachedFile = true
   else
     -- Check if request comes from a mobile device or bot => no caching than, either.
-    local userAgentsNoCaching = { "bot", "ia_archive", "slurp", "crawl", "spider", "linkbot", "iphone", "ipod", "android", "cupcake", "webos", "incognito", "webmate", "opera mini", "blackberry", "symbian", "series60", "nokia", "samsung" }
+    local userAgentsNoCaching = { "bot", "ia_archive", "slurp", "crawl", "spider", "linkbot", "iphone", "ipod", "android", "cupcake", "webos", "incognito", "webmate", "opera mini", "opera mobi", "blackberry", "symbian", "series60", "nokia", "samsung" }
     userAgent = lighty.request["User-Agent"]
     if (nil == userAgent) then
       sendCachedFile = true
