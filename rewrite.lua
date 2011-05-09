@@ -228,7 +228,7 @@ if (not attr) then
     -- Check if request comes from a mobile device or bot => no caching then, either.
 
     userAgent = lighty.request["User-Agent"]
-    if (no nil == userAgent) then
+    if (not nil == userAgent) then
       userAgent = string.lower(userAgent)
         
       for i, v in ipairs(userAgentsNoCaching) do
