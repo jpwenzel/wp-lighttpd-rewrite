@@ -1,7 +1,7 @@
 --[[
 rewrite.lua
 -------------------------------------------------------------------------------
-Rewrite rules for a Wordpress 2.x installation on top of a lighttpd web server.
+Rewrite rules for a Wordpress 3.x installation on top of a lighttpd web server.
 
 This LUA script comes in very handy if your using the following plugins in
 your Wordpress installation:
@@ -13,6 +13,7 @@ http://tempe.st/2008/05/lightning-speed-wordpress-with-lighttpd-and-supercache-p
 
 -------------------------------------------------------------------------------
 Copyright 2008,2009 by Giovanni Intini, Jean Pierre Wenzel <jpwenzel@gmx.net>
+Copyright 2011 by Eric Chamberlain
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -32,6 +33,153 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -- ----------------------------------------------------------------------------
 -- CONFIGURATION
 enableUserAgentCheck = true
+
+-- Taken from the WPSuperCache mod_rewrite rules
+-- RewriteCond %{HTTP_USER_AGENT} !^.*(2.0\ MMP|240x320|400X240|AvantGo|BlackBerry|Blazer|Cellphone|Danger|DoCoMo|Elaine/3.0|EudoraWeb|Googlebot-Mobile|hiptop|IEMobile|KYOCERA/WX310K|LG/U990|MIDP-2.|MMEF20|MOT-V|NetFront|Newt|Nintendo\ Wii|Nitro|Nokia|Opera\ Mini|Palm|PlayStation\ Portable|portalmmm|Proxinet|ProxiNet|SHARP-TQ-GX10|SHG-i900|Small|SonyEricsson|Symbian\ OS|SymbianOS|TS21i-10|UP.Browser|UP.Link|webOS|Windows\ CE|WinWAP|YahooSeeker/M1A1-R2D2|iPhone|iPod|Android|BlackBerry9530|LG-TU915\ Obigo|LGE\ VX|webOS|Nokia5800).* [NC]
+local userAgentsNoCaching = { 
+                              "2.0 MMP",
+                              "240x320",
+                              "400X240",
+                              "AvantGo",
+                              "BlackBerry",
+                              "Blazer",
+                              "Cellphone",
+                              "Danger",
+                              "DoCoMo",
+                              "Elaine/3.0",
+                              "EudoraWeb",
+                              "Googlebot-Mobile",
+                              "hiptop",
+                              "IEMobile",
+                              "KYOCERA/WX310K",
+                              "LG/U990",
+                              "MIDP-2.",
+                              "MMEF20",
+                              "MOT-V",
+                              "NetFront",
+                              "Newt",
+                              "Nintendo Wii",
+                              "Nitro",
+                              "Nokia",
+                              "Opera Mini",
+                              "Palm",
+                              "PlayStation Portable",
+                              "portalmmm",
+                              "Proxinet",
+                              "ProxiNet",
+                              "SHARP-TQ-GX10",
+                              "SHG-i900",
+                              "Small",
+                              "SonyEricsson",
+                              "Symbian OS",
+                              "SymbianOS",
+                              "TS21i-10",
+                              "UP.Browser",
+                              "UP.Link",
+                              "webOS",
+                              "Windows CE",
+                              "WinWAP",
+                              "YahooSeeker/M1A1-R2D2",
+                              "iPhone",
+                              "iPod",
+                              "Android",
+                              "BlackBerry9530",
+                              "LG-TU915 Obigo",
+                              "LGE VX",
+                              "Nokia5800"
+                            }
+
+-- RewriteCond %{HTTP_user_agent} !^(w3c\ |w3c-|acs-|alav|alca|amoi|audi|avan|benq|bird|blac|blaz|brew|cell|cldc|cmd-|dang|doco|eric|hipt|htc_|inno|ipaq|ipod|jigs|kddi|keji|leno|lg-c|lg-d|lg-g|lge-|lg/u|maui|maxo|midp|mits|mmef|mobi|mot-|moto|mwbp|nec-|newt|noki|palm|pana|pant|phil|play|port|prox|qwap|sage|sams|sany|sch-|sec-|send|seri|sgh-|shar|sie-|siem|smal|smar|sony|sph-|symb|t-mo|teli|tim-|tosh|tsm-|upg1|upsi|vk-v|voda|wap-|wapa|wapi|wapp|wapr|webc|winw|winw|xda\ |xda-).* [NC]
+local userAgentsStartWithNoCaching =  {
+                                        "w3c ",
+                                        "w3c-",
+                                        "acs-",
+                                        "alav",
+                                        "alca",
+                                        "amoi",
+                                        "audi",
+                                        "avan",
+                                        "benq",
+                                        "bird",
+                                        "blac",
+                                        "blaz",
+                                        "brew",
+                                        "cell",
+                                        "cldc",
+                                        "cmd-",
+                                        "dang",
+                                        "doco",
+                                        "eric",
+                                        "hipt",
+                                        "htc_",
+                                        "inno",
+                                        "ipaq",
+                                        "ipod",
+                                        "jigs",
+                                        "kddi",
+                                        "keji",
+                                        "leno",
+                                        "lg-c",
+                                        "lg-d",
+                                        "lg-g",
+                                        "lge-",
+                                        "lg/u",
+                                        "maui",
+                                        "maxo",
+                                        "midp",
+                                        "mits",
+                                        "mmef",
+                                        "mobi",
+                                        "mot-",
+                                        "moto",
+                                        "mwbp",
+                                        "nec-",
+                                        "newt",
+                                        "noki",
+                                        "palm",
+                                        "pana",
+                                        "pant",
+                                        "phil",
+                                        "play",
+                                        "port",
+                                        "prox",
+                                        "qwap",
+                                        "sage",
+                                        "sams",
+                                        "sany",
+                                        "sch-",
+                                        "sec-",
+                                        "send",
+                                        "seri",
+                                        "sgh-",
+                                        "shar",
+                                        "sie-",
+                                        "siem",
+                                        "smal",
+                                        "smar",
+                                        "sony",
+                                        "sph-",
+                                        "symb",
+                                        "t-mo",
+                                        "teli",
+                                        "tim-",
+                                        "tosh",
+                                        "tsm-",
+                                        "upg1",
+                                        "upsi",
+                                        "vk-v",
+                                        "voda",
+                                        "wap-",
+                                        "wapa",
+                                        "wapi",
+                                        "wapp",
+                                        "wapr",
+                                        "webc",
+                                        "winw",
+                                        "winw",
+                                        "xda ",
+                                        "xda-"
+                                      }
 -- ----------------------------------------------------------------------------
 
 function serve_html(cached_page)
@@ -54,6 +202,10 @@ function serve_gzip(cached_page)
   end
 end
 
+function string.starts(String,Start)
+   return string.sub(String,1,string.len(Start)) == Start
+end
+
 attr = lighty.stat(lighty.env["physical.path"])
  
 if (not attr) then
@@ -66,23 +218,33 @@ if (not attr) then
   
   -- Have a cookie? => no caching
   user_cookie = lighty.request["Cookie"] or ""
-  cookie_condition = not (string.find(user_cookie, ".*comment_author.*") or string.find(user_cookie, ".*wordpress.*") or string.find(user_cookie, ".*wp-postpass_.*"))
+  cookie_condition =  not (string.find(user_cookie, ".*comment_author.*") or 
+                      string.find(user_cookie, ".*wordpress.*") or 
+                      string.find(user_cookie, ".*wp-postpass_.*"))
   
-  if (not enableUserAgentCheck) then
-    sendCachedFile = true
-  else
+  sendCachedFile = true
+  
+  if (enableUserAgentCheck) then
     -- Check if request comes from a mobile device or bot => no caching then, either.
-    local userAgentsNoCaching = { "bot", "ia_archive", "slurp", "crawl", "spider", "linkbot", "iphone", "ipod", "android", "cupcake", "webos", "incognito", "webmate", "opera mini", "opera mobi", "blackberry", "symbianos", "series60", "nokia", "samsung" }
+
     userAgent = lighty.request["User-Agent"]
-    if (nil == userAgent) then
-      sendCachedFile = true
-    else
+    if (no nil == userAgent) then
       userAgent = string.lower(userAgent)
+        
       for i, v in ipairs(userAgentsNoCaching) do
-        if string.find(v, userAgent) then
+        if (string.find(v, userAgent)) then
           sendCachedFile = false
   	      break
         end  
+      end
+      
+      if (sendCachedFile) then
+        for i, v in ipairs(userAgentsStartWithNoCaching) do
+          if (string.starts(v, userAgent)) then
+            sendCachedFile = false
+            break
+          end  
+        end
       end
     end
   end
