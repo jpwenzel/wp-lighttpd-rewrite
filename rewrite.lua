@@ -180,6 +180,11 @@ local userAgentsStartWithNoCaching =  {
                                         "xda ",
                                         "xda-"
                                       }
+
+-- Requests from Linklift's Linkbot HTTP crawler should not be cached.
+table.insert(userAgentsStartWithNoCaching, "linkbot")
+table.insert(userAgentsStartWithNoCaching, "linklift")
+
 -- ----------------------------------------------------------------------------
 
 function serve_html(cached_page)
